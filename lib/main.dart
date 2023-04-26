@@ -3,9 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-import 'pages.dart';
+import 'enums/pages.dart';
 
-import 'nav_bar.dart';
+import 'widgets/nav_bar.dart';
+import 'pages/resistor_calculator.dart';
+
+import 'store/gloab_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +34,13 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Navigator(
         pages: [
-          MaterialPage(child: MyHomePage(title: 'Flutter Demo Home Page'))
+          MaterialPage(child: MyHomePage(title: 'Flutter Demo Home Page')),
+          if (true) //globalState.currentPage == Pages.resistor_calculator)
+            MaterialPage(child: ResistorCalculatorPage()),
         ],
+        onPopPage: (route, result) {
+          return route.didPop(result);
+        },
       ),
     );
   }
