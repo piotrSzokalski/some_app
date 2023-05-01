@@ -10,13 +10,30 @@ class ResistorCalculatorPage extends StatefulWidget {
 }
 
 class _ResistorCalculatorPage extends State {
+  List<String> _digits = ['0', '0'];
+  double _multiplier = 1;
+  int _tolerance = 1;
+
+  int _resistance = 0;
+
+  String formatNumber(int n) {
+    return n.toString();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: Text('Kalkulator rezystncji')),
         body: Center(
             child: Column(
           children: [
-            Text('Rezystancja'),
+            Text(
+              'Rezystancja:',
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              _resistance.toString() + 'Ω',
+              style: TextStyle(fontSize: 20),
+            ),
             Row(
               children: [
                 Expanded(
@@ -39,6 +56,7 @@ class _ResistorCalculatorPage extends State {
 
   Column firstBand() {
     List<Color> colors = [
+      Colors.black,
       Colors.brown,
       Colors.red,
       Colors.orange,
@@ -46,13 +64,26 @@ class _ResistorCalculatorPage extends State {
       Colors.green,
       Colors.blue,
       Colors.purple,
-      Colors.green,
       Colors.grey,
       Colors.white
     ];
     return Column(
       children: [
-        for (Color c in colors) colorBox(color: c),
+        Text(_digits[0]),
+        for (int i = 0; i < colors.length; i++)
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: colorBox(
+              value: i,
+              color: colors[i],
+              band: ResistorBand.first_band,
+            ),
+          ),
       ],
     );
   }
@@ -72,26 +103,58 @@ class _ResistorCalculatorPage extends State {
     ];
     return Column(
       children: [
-        for (Color c in colors) colorBox(color: c),
+        Text(_digits[1]),
+        for (int i = 0; i < colors.length; i++)
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: colorBox(
+              value: i,
+              color: colors[i],
+              band: ResistorBand.second_band,
+            ),
+          ),
       ],
     );
   }
 
   Column multiplierBand() {
     List<Color> colors = [
-      Colors.white,
-      Colors.yellow,
       Colors.black,
       Colors.brown,
       Colors.red,
       Colors.orange,
       Colors.yellow,
       Colors.green,
-      Colors.blue
+      Colors.blue,
+      Colors.purple,
+      Colors.grey,
+      // 8
+      Colors.white,
+      Color.fromARGB(255, 231, 220, 118),
+      Color.fromARGB(209, 220, 217, 217)
     ];
     return Column(
       children: [
-        for (Color c in colors) colorBox(color: c),
+        Text(_multiplier.toString()),
+        for (int i = 0; i < colors.length; i++)
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: colorBox(
+              value: i,
+              color: colors[i],
+              band: ResistorBand.multiplier,
+            ),
+          ),
       ],
     );
   }
@@ -110,20 +173,61 @@ class _ResistorCalculatorPage extends State {
     ];
     return Column(
       children: [
-        for (Color c in colors) colorBox(color: c),
+        Text(_resistance.toString()),
+        for (int i = 0; i < colors.length; i++)
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: colorBox(
+              value: i,
+              color: colors[i],
+              band: ResistorBand.tolerance,
+            ),
+          ),
       ],
     );
   }
 
-  Container colorBox(
-      {Color color = Colors.white,
-      ResistorBand band = ResistorBand.first_band}) {
+  Container colorBox({
+    required int value,
+    Color color = Colors.white,
+    ResistorBand band = ResistorBand.first_band,
+  }) {
     return Container(
       width: 50,
       height: 50,
       color: color,
       child: InkWell(
-        onTap: () => print('abc'),
+        onTap: () {
+          switch (band) {
+            case ResistorBand.first_band:
+              _digits[0] = value.toString();
+              break;
+            case ResistorBand.second_band:
+              _digits[1] = value.toString();
+              break;
+            case ResistorBand.multiplier:
+              if (value < 9) {
+                _multiplier = pow(10, value).toDouble();
+              } else if (value == 10) {
+                _multiplier = 0.1;
+              } else {
+                _multiplier = 0.01;
+              }
+              break;
+            case ResistorBand.tolerance:
+              //_resistance = value;
+              break;
+          }
+          _resistance = (int.parse(_digits.join('')) * _multiplier) as int;
+          setState(() {
+            _resistance;
+          });
+        },
       ),
     );
   }

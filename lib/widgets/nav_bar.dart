@@ -20,7 +20,8 @@ class NavBar extends StatelessWidget {
               title: const Text('kalkulator'),
               onTap: () {
                 print('kalkultor');
-                globalState.currentPage = Pages.resistor_calculator;
+                globalState.currentPage.value = Pages.resistor_calculator;
+                //globalState.currentPage = Pages.resistor_calculator;
               },
             )
           ],

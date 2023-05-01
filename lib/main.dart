@@ -7,6 +7,7 @@ import 'enums/pages.dart';
 
 import 'widgets/nav_bar.dart';
 import 'pages/resistor_calculator.dart';
+import 'pages/chat.dart';
 
 import 'store/gloab_state.dart';
 
@@ -26,24 +27,19 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Navigator(
-        pages: [
-          MaterialPage(child: MyHomePage(title: 'Flutter Demo Home Page')),
-          if (true) //globalState.currentPage == Pages.resistor_calculator)
-            MaterialPage(child: ResistorCalculatorPage()),
-        ],
-        onPopPage: (route, result) {
-          return route.didPop(result);
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        home: ValueListenableBuilder<Pages>(
+          valueListenable: globalState.currentPage,
+          builder: (BuildContext bc, Pages p, Widget? child) => Navigator(
+            pages: [
+              new MaterialPage(
+                  child: MyHomePage(title: 'Flutter Demooo Home Page')),
+              if (globalState.currentPage.value == Pages.resistor_calculator)
+                MaterialPage(child: ResistorCalculatorPage()),
+            ],
+          ),
+        ),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -71,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     databaseReference.onValue.listen((event) {
-      print(event.snapshot.value.toString());
+      //print(event.snapshot.value.toString());
       setState(() {
         _counter = int.parse(event.snapshot.child('c').value.toString());
         _deviceOn = event.snapshot.child('DeviceOn').value as bool;
