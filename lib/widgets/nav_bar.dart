@@ -17,6 +17,15 @@ class NavBar extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.abc),
+              title: const Text('home'),
+              onTap: () {
+                print('home');
+                globalState.currentPage.value = Pages.home;
+                //globalState.currentPage = Pages.resistor_calculator;
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.abc),
               title: const Text('kalkulator'),
               onTap: () {
                 print('kalkultor');

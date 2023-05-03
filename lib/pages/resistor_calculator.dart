@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../widgets/nav_bar.dart';
+
 enum ResistorBand { first_band, second_band, multiplier, tolerance }
 
 class ResistorCalculatorPage extends StatefulWidget {
@@ -23,6 +25,7 @@ class _ResistorCalculatorPage extends State {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(title: Text('Kalkulator rezystncji')),
+        drawer: NavBar(),
         body: Center(
             child: Column(
           children: [

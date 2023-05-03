@@ -26,20 +26,32 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        home: ValueListenableBuilder<Pages>(
-          valueListenable: globalState.currentPage,
-          builder: (BuildContext bc, Pages p, Widget? child) => Navigator(
-            pages: [
-              new MaterialPage(
+  Widget build(BuildContext context) {
+    print('building');
+    return MaterialApp(
+      home: ValueListenableBuilder<Pages>(
+        valueListenable: globalState.currentPage,
+        builder: (BuildContext bc, Pages p, Widget? child) => Navigator(
+          onPopPage: (route, result) {
+            print('poping');
+            if (!route.didPop(result)) {
+              return false;
+            }
+            return true;
+          },
+          pages: [
+            if (globalState.currentPage.value == Pages.home)
+              MaterialPage(
                   child: MyHomePage(title: 'Flutter Demooo Home Page')),
-              if (globalState.currentPage.value == Pages.resistor_calculator)
-                MaterialPage(child: ResistorCalculatorPage()),
-            ],
-          ),
+            if (globalState.currentPage.value == Pages.resistor_calculator)
+              MaterialPage(child: ResistorCalculatorPage()),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
 
 class MyHomePage extends StatefulWidget {
