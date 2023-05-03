@@ -8,12 +8,15 @@ import 'enums/pages.dart';
 import 'widgets/nav_bar.dart';
 import 'pages/resistor_calculator.dart';
 import 'pages/chat.dart';
+import 'pages/arduino.dart';
 
 import 'store/gloab_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //globalState.futureApp = await Firebase.initializeApp();
+  globalState.futureApp = Firebase.initializeApp();
+  await globalState.futureApp;
   runApp(const MyApp());
 }
 
@@ -29,13 +32,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    print('building');
     return MaterialApp(
       home: ValueListenableBuilder<Pages>(
         valueListenable: globalState.currentPage,
         builder: (BuildContext bc, Pages p, Widget? child) => Navigator(
           onPopPage: (route, result) {
-            print('poping');
             if (!route.didPop(result)) {
               return false;
             }
@@ -43,10 +44,13 @@ class _MyAppState extends State<MyApp> {
           },
           pages: [
             if (globalState.currentPage.value == Pages.home)
-              MaterialPage(
-                  child: MyHomePage(title: 'Flutter Demooo Home Page')),
+              MaterialPage(child: MyHomePage(title: 'Home ee')),
             if (globalState.currentPage.value == Pages.resistor_calculator)
               MaterialPage(child: ResistorCalculatorPage()),
+            if (globalState.currentPage.value == Pages.chat)
+              MaterialPage(child: ChatPage()),
+            if (globalState.currentPage.value == Pages.arduino)
+              MaterialPage(child: ArduinoPage()),
           ],
         ),
       ),
@@ -64,7 +68,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final Future<FirebaseApp> futureApp = Firebase.initializeApp();
+  //final Future<FirebaseApp> futureApp = Firebase.initializeApp();
   late DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
   int _counter = 0;
@@ -92,32 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: FutureBuilder(
-        future: futureApp,
-        builder: (context, snapshot) => snapshot.hasError
-            ? Text('blad')
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'Counter:',
-                  ),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Switch(
-                      value: _deviceOn,
-                      onChanged: (x) =>
-                          databaseReference.update({'DeviceOn': !_deviceOn}))
-                ],
-              ),
-      )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: Text('Witaj'),
+      ),
     );
   }
 }

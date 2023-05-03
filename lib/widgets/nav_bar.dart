@@ -26,13 +26,30 @@ class NavBar extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.abc),
+              title: const Text('czat'),
+              onTap: () {
+                print('czat');
+                globalState.currentPage.value = Pages.chat;
+                //globalState.currentPage = Pages.resistor_calculator;
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.abc),
+              title: const Text('Arduino'),
+              onTap: () {
+                print('czat');
+                globalState.currentPage.value = Pages.arduino;
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.abc),
               title: const Text('kalkulator'),
               onTap: () {
                 print('kalkultor');
                 globalState.currentPage.value = Pages.resistor_calculator;
                 //globalState.currentPage = Pages.resistor_calculator;
               },
-            )
+            ),
           ],
         ),
       );

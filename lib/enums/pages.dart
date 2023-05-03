@@ -1,1 +1,1 @@
-enum Pages { login, home, resistor_calculator, chat }
+enum Pages { login, home, resistor_calculator, chat, arduino }
