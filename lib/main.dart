@@ -9,6 +9,7 @@ import 'widgets/nav_bar.dart';
 import 'pages/resistor_calculator.dart';
 import 'pages/chat.dart';
 import 'pages/arduino.dart';
+import 'pages/home.dart';
 
 import 'store/gloab_state.dart';
 
@@ -53,50 +54,6 @@ class _MyAppState extends State<MyApp> {
               MaterialPage(child: ArduinoPage()),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  //final Future<FirebaseApp> futureApp = Firebase.initializeApp();
-  late DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-
-  int _counter = 0;
-  bool _deviceOn = false;
-
-  void _incrementCounter() async {
-    setState(() {
-      databaseReference.update({'c': _counter + 1});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    databaseReference.onValue.listen((event) {
-      //print(event.snapshot.value.toString());
-      setState(() {
-        _counter = int.parse(event.snapshot.child('c').value.toString());
-        _deviceOn = event.snapshot.child('DeviceOn').value as bool;
-      });
-    });
-
-    return Scaffold(
-      drawer: NavBar(),
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Text('Witaj'),
       ),
     );
   }
