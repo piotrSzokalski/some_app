@@ -11,7 +11,6 @@ class ArduinoPage extends StatefulWidget {
 }
 
 class _ArduinoPage extends State<ArduinoPage> {
-  //final Future<FirebaseApp> futureApp = Firebase.initializeApp();
   late DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
   int _counter = 0;
