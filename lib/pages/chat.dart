@@ -12,7 +12,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State {
-  List<String> _items = ['abc', 'def'];
+  List<String> _items = ['wiadomosc1', 'wiadomosc 20'];
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -23,35 +23,35 @@ class _ChatPage extends State {
   }
 
   void sendMessage() {
+    loadData();
     setState(() {
       _items.add(_inputController.text);
     });
   }
 
   void loadData() async {
-    final DocumentSnapshot snapshot =
-        await firestore.collection('chats').doc('chats').get();
-    final Object? data = snapshot.data();
+    print("________________________");
+    print('loading data');
 
-    print('eeee');
+    var x = await firestore.collection('users').get();
+    x.docs.forEach((element) {
+      print('entry');
+      print(element.data());
+    });
 
-    // var snapshot =
-    //     await firestore.collection('chats').get();
-    // print('snpshot');
-
-    // var x = snapshot.docs.map((doc) {
-    //   Map<String, dynamic> data = doc.data();
-    //   return Message(data['user'], data['text'], data['dataTime']);
-    // }).toList();
-
-    print("____________");
+    print("________________________");
+    //QuerySnapshot querySnapshot = await firestore.collection('users').get();
+    // querySnapshot.docs.forEach((doc) {
+    //   print('entry');
+    //   print(doc.data());
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('chat  |'),
+        title: Text('Czat'),
       ),
       drawer: NavBar(),
       body: Column(
@@ -91,6 +91,7 @@ class _ChatPage extends State {
                         sendMessage();
                         setState(() {
                           inputController.clear();
+                          //loadData();
                         });
                       },
                       icon: Icon(Icons.arrow_forward)),
